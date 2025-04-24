@@ -86,6 +86,7 @@ function CardGroup({ bookings, handleDelete }) {
                         <Card.Text className="text-muted">{booking.description}</Card.Text>
                         <Card.Text><strong>Date:</strong> {formattedDate}</Card.Text>
                         <Card.Text><strong>Time:</strong> {formattedTime}</Card.Text>
+                        <Card.Text><strong>Location:</strong> {booking.location}</Card.Text> {/* Display location */}
                         <Badge bg={bg} className="mb-3">
                             {completed ? "Completed" : "Pending"}
                         </Badge>
@@ -104,3 +105,4 @@ function CardGroup({ bookings, handleDelete }) {
         );
     });
 }
+

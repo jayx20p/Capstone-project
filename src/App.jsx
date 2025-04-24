@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import AddBooking from "./pages/AddBooking";
 import useLocalStorage from "use-local-storage";
 import { BookingContext } from "./contexts/BookingContext";
+import { LoadScript } from "@react-google-maps/api";
 
 // Layout WITH Navbar (used for home, add booking, etc.)
 function Layout() {
@@ -29,20 +30,22 @@ export default function App() {
   const [bookings, setBookings] = useLocalStorage("bookings", []);
 
   return (
-    <BookingContext.Provider value={{ bookings, setBookings }}>
-      <BrowserRouter>
-        <Routes>
-          {/* ✅ Login route WITHOUT layout */}
-          <Route path="/" element={<Login />} />
-
-          {/* ✅ Protected or main pages WITH layout */}
-          <Route element={<Layout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/add" element={<AddBooking />} />
-            <Route path="*" element={<ErrorPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </BookingContext.Provider>
+    <LoadScript
+      googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+      libraries={["places"]}
+    >
+      <BookingContext.Provider value={{ bookings, setBookings }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route element={<Layout />}>
+              <Route path="/home" element={<Home />} />
+              <Route path="/add" element={<AddBooking />} />
+              <Route path="*" element={<ErrorPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </BookingContext.Provider>
+    </LoadScript>
   );
 }

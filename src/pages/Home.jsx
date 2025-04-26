@@ -2,12 +2,14 @@ import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { BookingContext } from "../contexts/BookingContext";
 import { useNavigate } from "react-router-dom";
+import ProfilePictureUploader from '../components/ProfilePictureUploader';
 import axios from 'axios';
 
 export default function Home() {
     const { bookings, setBookings } = useContext(BookingContext);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [profilePicUrl, setProfilePicUrl] = useState(null);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -53,6 +55,38 @@ export default function Home() {
             padding: '2rem 0'
         }}>
             <Container>
+                <div className="text-center mb-4">
+                    {profilePicUrl ? (
+                        <img
+                            src={profilePicUrl}
+                            alt="Profile"
+                            style={{
+                                width: "120px",
+                                height: "120px",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                                border: "3px solid #007bff",
+                            }}
+                        />
+                    ) : (
+                        <div
+                            style={{
+                                width: "120px",
+                                height: "120px",
+                                borderRadius: "50%",
+                                backgroundColor: "#e0e0e0",
+                                display: "inline-block",
+                            }}
+                        />
+                    )}
+
+                    <h3 className="mt-3" style={{ color: "#007bff" }}>Welcome!</h3>
+
+                    <ProfilePictureUploader
+                        userId={localStorage.getItem("user_id")}
+                        onUploadComplete={(url) => setProfilePicUrl(url)}
+                    />
+                </div>
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2 style={{ color: '#007bff' }}>Your Dental Appointments</h2>
                     <Button variant="outline-primary" onClick={handleLogout}>
@@ -66,6 +100,7 @@ export default function Home() {
         </div>
     );
 }
+
 
 function CardGroup({ bookings, handleDelete }) {
     return bookings.map((booking) => {

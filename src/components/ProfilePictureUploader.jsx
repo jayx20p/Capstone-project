@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../firebase';
+import axios from 'axios'; // <-- Make sure to import axios!
 
 function ProfilePictureUploader({ userId, onUploadComplete }) {
     const [file, setFile] = useState(null);
@@ -16,11 +17,23 @@ function ProfilePictureUploader({ userId, onUploadComplete }) {
 
         const storageRef = ref(storage, `profilePictures/${userId}/${file.name}`);
         setUploading(true);
+
         try {
+            // Upload file to Firebase Storage
             await uploadBytes(storageRef, file);
+
+            // Get the download URL
             const downloadURL = await getDownloadURL(storageRef);
+
+            // === 🛠 Paste your axios.put here ===
+            await axios.put(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/users/${userId}/profile-picture`, {
+                profile_picture: downloadURL,
+            });
+
+            // After everything successful, call onUploadComplete
             onUploadComplete(downloadURL);
         } catch (err) {
+            console.error(err);
             setError('Failed to upload');
         } finally {
             setUploading(false);

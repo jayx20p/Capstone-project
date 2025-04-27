@@ -1,9 +1,9 @@
-import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Badge, Button, Card, Col, Container, Row, Form } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { BookingContext } from "../contexts/BookingContext";
 import { useNavigate } from "react-router-dom";
-import ProfilePictureUploader from '../components/ProfilePictureUploader';
 import axios from 'axios';
+import ProfilePictureUploader from "../components/ProfilePictureUploader";
 
 export default function Home() {
     const { bookings, setBookings } = useContext(BookingContext);
@@ -79,7 +79,6 @@ export default function Home() {
                             }}
                         />
                     )}
-
                     <h3 className="mt-3" style={{ color: "#007bff" }}>Welcome!</h3>
 
                     <ProfilePictureUploader
@@ -87,12 +86,14 @@ export default function Home() {
                         onUploadComplete={(url) => setProfilePicUrl(url)}
                     />
                 </div>
+
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2 style={{ color: '#007bff' }}>Your Dental Appointments</h2>
                     <Button variant="outline-primary" onClick={handleLogout}>
                         Logout
                     </Button>
                 </div>
+
                 <Row className="gx-4 gy-4">
                     <CardGroup bookings={bookings} handleDelete={handleDelete} />
                 </Row>
@@ -101,9 +102,25 @@ export default function Home() {
     );
 }
 
-
 function CardGroup({ bookings, handleDelete }) {
-    return bookings.map((booking) => {
+    const [localBookings, setLocalBookings] = useState(bookings);
+    const navigate = useNavigate(); // <-- Add this line!
+
+    const handleCheckboxChange = (id) => {
+        const updatedBookings = localBookings.map((booking) => {
+            if (booking.booking_id === id) {
+                return { ...booking, completed: !booking.completed };
+            }
+            return booking;
+        });
+        setLocalBookings(updatedBookings);
+    };
+
+    useEffect(() => {
+        setLocalBookings(bookings);
+    }, [bookings]);
+
+    return localBookings.map((booking) => {
         const completed = booking.completed;
         const bg = completed ? "success" : "warning";
         const formattedDate = booking.booking_date instanceof Date
@@ -121,10 +138,30 @@ function CardGroup({ bookings, handleDelete }) {
                         <Card.Text className="text-muted">{booking.description}</Card.Text>
                         <Card.Text><strong>Date:</strong> {formattedDate}</Card.Text>
                         <Card.Text><strong>Time:</strong> {formattedTime}</Card.Text>
-                        <Card.Text><strong>Location:</strong> {booking.location}</Card.Text> {/* Display location */}
-                        <Badge bg={bg} className="mb-3">
-                            {completed ? "Completed" : "Pending"}
-                        </Badge>
+                        <Card.Text><strong>Location:</strong> {booking.location}</Card.Text>
+
+                        <div className="d-flex align-items-center mb-3">
+                            <Badge bg={bg} className="me-2">
+                                {completed ? "Completed" : "Pending"}
+                            </Badge>
+
+                            {!completed && (
+                                <Form.Check
+                                    type="checkbox"
+                                    label="Mark as completed"
+                                    onChange={() => handleCheckboxChange(booking.booking_id)}
+                                />
+                            )}
+                        </div>
+                        <Button
+                            variant="outline-success"
+                            size="sm"
+                            className="me-2"
+                            onClick={() => navigate(`/edit/${booking.booking_id}`)} // <-- now navigate works
+                        >
+                            Edit
+                        </Button>
+
                         <div>
                             <Button
                                 variant="outline-danger"
@@ -140,4 +177,3 @@ function CardGroup({ bookings, handleDelete }) {
         );
     });
 }
-

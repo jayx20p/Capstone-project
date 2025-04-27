@@ -5,6 +5,7 @@ import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import AddBooking from "./pages/AddBooking";
+import EditBooking from "./pages/EditBooking";
 import useLocalStorage from "use-local-storage";
 import { BookingContext } from "./contexts/BookingContext";
 import { LoadScript } from "@react-google-maps/api";
@@ -41,6 +42,7 @@ export default function App() {
             <Route element={<Layout />}>
               <Route path="/home" element={<Home />} />
               <Route path="/add" element={<AddBooking />} />
+              <Route path="/edit/:bookingId" element={<EditBooking />} />
               <Route path="*" element={<ErrorPage />} />
             </Route>
           </Routes>

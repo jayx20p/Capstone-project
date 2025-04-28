@@ -33,38 +33,59 @@ function Login() {
 
     return (
         <div style={{
-            background: 'linear-gradient(to bottom right, #e0f7fa, #ffffff)',
-            height: '100vh',
+            background: 'linear-gradient(to bottom right, #d0f0f6, #ffffff)',
+            minHeight: '100vh',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            padding: '2rem'
         }}>
             <Card style={{
-                width: '25rem',
+                width: '100%',
+                maxWidth: '400px',
                 padding: '2rem',
-                borderRadius: '1rem',
-                boxShadow: '0 0 20px rgba(0, 123, 255, 0.1)'
+                borderRadius: '1.5rem',
+                boxShadow: '0 8px 30px rgba(0, 123, 255, 0.2)',
+                border: 'none'
             }}>
                 <Card.Body>
                     <div className="text-center mb-4">
                         <img
-                            src="https://cdn-icons-png.flaticon.com/512/3820/3820331.png"
+                            src="/images/clinic-logo.jpg"
                             alt="Dental Logo"
-                            style={{ width: '60px', marginBottom: '10px' }}
+                            style={{ width: '70px', marginBottom: '1rem' }}
                         />
-                        <h4 style={{ color: '#007bff' }}>Welcome to BrightSmile Dental</h4>
-                        <p className="text-muted">Please sign in to continue</p>
+                        <h3 style={{ color: '#00bcd4', fontWeight: '600' }}>BrightSmile Dental</h3>
+                        <p className="text-muted" style={{ fontSize: '0.95rem' }}>
+                            Your Smile, Our Passion
+                        </p>
                     </div>
 
-                    {error && <Alert variant="danger">{error}</Alert>}
+                    {error && (
+                        <Alert variant="danger" className="text-center" style={{ fontSize: '0.9rem' }}>
+                            {error}
+                        </Alert>
+                    )}
 
                     <Button
-                        variant="outline-primary"
+                        variant="primary"
                         onClick={handleGoogleSignIn}
                         className="w-100"
+                        style={{
+                            backgroundColor: '#00bcd4',
+                            border: 'none',
+                            fontWeight: '600',
+                            letterSpacing: '0.5px'
+                        }}
                     >
                         Sign in with Google
                     </Button>
+
+                    <div className="text-center mt-3">
+                        <small className="text-muted">
+                            By signing in, you agree to our <a href="#" style={{ color: '#00bcd4' }}>Terms</a> & <a href="#" style={{ color: '#00bcd4' }}>Privacy Policy</a>.
+                        </small>
+                    </div>
                 </Card.Body>
             </Card>
         </div>
@@ -72,3 +93,4 @@ function Login() {
 }
 
 export default Login;
+

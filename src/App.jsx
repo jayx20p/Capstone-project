@@ -16,9 +16,9 @@ function Layout() {
     <>
       <Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="/home">Bookings</Navbar.Brand>
+          <Navbar.Brand href="/home">Appointments</Navbar.Brand>
           <Nav>
-            <Nav.Link href="/add">Add Booking</Nav.Link>
+            <Nav.Link href="/add">Add Appointment</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

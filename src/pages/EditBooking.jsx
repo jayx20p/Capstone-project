@@ -1,6 +1,5 @@
-// pages/EditBooking.jsx
 import { useEffect, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Container, Card, Form, Spinner } from "react-bootstrap";
 import Calendar from "react-calendar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -14,9 +13,8 @@ export default function EditBooking() {
     const [selectedAddress, setSelectedAddress] = useState("");
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const { bookingId } = useParams(); // <-- get bookingId from URL
+    const { bookingId } = useParams();
 
-    // Google Places Autocomplete
     const {
         ready,
         value,
@@ -40,7 +38,6 @@ export default function EditBooking() {
                 }
             };
 
-    // Fetch existing booking details
     useEffect(() => {
         const fetchBooking = async () => {
             try {
@@ -83,85 +80,139 @@ export default function EditBooking() {
         }
     };
 
-    if (loading) return <div className="text-center mt-5">Loading booking details...</div>;
+    if (loading) {
+        return (
+            <div style={{
+                background: 'linear-gradient(to bottom right, #d0f0f6, #ffffff)',
+                minHeight: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Spinner animation="border" variant="info" />
+            </div>
+        );
+    }
 
     return (
-        <Container>
-            <h1 className="my-3">Edit Booking</h1>
-            <Form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    handleUpdateBooking();
-                }}
-            >
-                <Form.Group className="mb-3" controlId="title">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        type="text"
-                        placeholder="Enter booking title"
-                        required
-                    />
-                </Form.Group>
+        <div style={{
+            background: 'linear-gradient(to bottom right, #d0f0f6, #ffffff)',
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '2rem'
+        }}>
+            <Card style={{
+                width: '100%',
+                maxWidth: '500px',
+                padding: '2rem',
+                borderRadius: '1.5rem',
+                boxShadow: '0 8px 30px rgba(0, 123, 255, 0.2)',
+                border: 'none',
+            }}>
+                <Card.Body>
+                    <div className="text-center mb-4">
+                        <img
+                            src="/images/clinic-logo.png" // replace with your correct logo path
+                            alt="BrightSmile Dental Logo"
+                            style={{ width: '60px', marginBottom: '1rem' }}
+                        />
+                        <h3 style={{ color: '#00bcd4', fontWeight: '600' }}>Edit Your Appointment</h3>
+                        <p className="text-muted" style={{ fontSize: '0.95rem' }}>
+                            Update your dental visit details
+                        </p>
+                    </div>
 
-                <Form.Group className="mb-3" controlId="date">
-                    <Form.Label>Select Date</Form.Label>
-                    <Calendar
-                        onChange={setDate}
-                        value={date}
-                        tileClassName={({ date: tileDate }) =>
-                            tileDate.toDateString() === date.toDateString()
-                                ? "bg-info text-white rounded-circle"
-                                : null
-                        }
-                    />
-                </Form.Group>
+                    <Form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleUpdateBooking();
+                        }}
+                    >
+                        <Form.Group className="mb-3" controlId="title">
+                            <Form.Label>Appointment Title</Form.Label>
+                            <Form.Control
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                type="text"
+                                placeholder="E.g., Tooth Extraction, Braces Consultation"
+                                required
+                            />
+                        </Form.Group>
 
-                <Form.Group className="mb-3" controlId="time">
-                    <Form.Label>Select Time</Form.Label>
-                    <Form.Control
-                        type="time"
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
-                        required
-                    />
-                </Form.Group>
+                        <Form.Group className="mb-3" controlId="date">
+                            <Form.Label>Select New Date</Form.Label>
+                            <div className="p-2 rounded border">
+                                <Calendar
+                                    onChange={setDate}
+                                    value={date}
+                                    tileClassName={({ date: tileDate }) =>
+                                        tileDate.toDateString() === date.toDateString()
+                                            ? "bg-info text-white rounded-circle"
+                                            : null
+                                    }
+                                />
+                            </div>
+                        </Form.Group>
 
-                <Form.Group className="mb-3" controlId="location">
-                    <Form.Label>Enter Address</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={selectedAddress}
-                        onChange={(e) => setValue(e.target.value)}
-                        disabled={!ready}
-                        placeholder="Search address (Google Maps)"
-                        required
-                    />
-                    {status === "OK" && (
-                        <div className="border border-light-subtle rounded shadow-sm mt-1">
-                            {data.map(({ place_id, description }) => (
-                                <div
-                                    key={place_id}
-                                    className="p-2 border-bottom hover-bg-light"
-                                    style={{ cursor: "pointer" }}
-                                    onClick={handleSelect({ description })}
-                                >
-                                    {description}
+                        <Form.Group className="mb-3" controlId="time">
+                            <Form.Label>Select New Time</Form.Label>
+                            <Form.Control
+                                type="time"
+                                value={time}
+                                onChange={(e) => setTime(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="location">
+                            <Form.Label>Update Clinic Address</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={selectedAddress}
+                                onChange={(e) => setValue(e.target.value)}
+                                disabled={!ready}
+                                placeholder="Type and select address"
+                                required
+                            />
+                            {status === "OK" && (
+                                <div className="border border-light rounded shadow-sm mt-1" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                                    {data.map(({ place_id, description }) => (
+                                        <div
+                                            key={place_id}
+                                            className="p-2 border-bottom hover-bg-light"
+                                            style={{ cursor: "pointer" }}
+                                            onClick={handleSelect({ description })}
+                                        >
+                                            {description}
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </Form.Group>
+                            )}
+                        </Form.Group>
 
-                {selectedAddress && (
-                    <p className="text-muted small">Selected: {selectedAddress}</p>
-                )}
+                        {selectedAddress && (
+                            <p className="text-muted small mb-3">Selected: {selectedAddress}</p>
+                        )}
 
-                <Button variant="primary" type="submit">
-                    Update Booking
-                </Button>
-            </Form>
-        </Container>
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className="w-100"
+                            style={{
+                                backgroundColor: '#00bcd4',
+                                border: 'none',
+                                fontWeight: '600',
+                                letterSpacing: '0.5px'
+                            }}
+                        >
+                            Update Appointment
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </div>
     );
 }
+

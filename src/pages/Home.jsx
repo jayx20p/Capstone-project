@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Container, Row, Form } from "react-bootstrap";
+import { Badge, Button, Card, Col, Container, Row, Form, Spinner } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { BookingContext } from "../contexts/BookingContext";
 import { useNavigate } from "react-router-dom";
@@ -45,17 +45,36 @@ export default function Home() {
         }
     };
 
-    if (loading) return <div className="text-center mt-5">Loading your appointments...</div>;
-    if (error) return <div className="text-center text-danger mt-5">{error}</div>;
+    if (loading) {
+        return (
+            <div style={{
+                background: 'linear-gradient(to bottom right, #d0f0f6, #ffffff)',
+                minHeight: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Spinner animation="border" variant="info" />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="text-center text-danger mt-5">
+                {error}
+            </div>
+        );
+    }
 
     return (
         <div style={{
-            background: 'linear-gradient(to bottom right, #e3f2fd, #ffffff)',
+            background: 'linear-gradient(to bottom right, #d0f0f6, #ffffff)',
             minHeight: '100vh',
             padding: '2rem 0'
         }}>
             <Container>
-                <div className="text-center mb-4">
+                <div className="text-center mb-5">
                     {profilePicUrl ? (
                         <img
                             src={profilePicUrl}
@@ -65,7 +84,8 @@ export default function Home() {
                                 height: "120px",
                                 borderRadius: "50%",
                                 objectFit: "cover",
-                                border: "3px solid #007bff",
+                                border: "3px solid #00bcd4",
+                                marginBottom: "1rem"
                             }}
                         />
                     ) : (
@@ -76,10 +96,11 @@ export default function Home() {
                                 borderRadius: "50%",
                                 backgroundColor: "#e0e0e0",
                                 display: "inline-block",
+                                marginBottom: "1rem"
                             }}
                         />
                     )}
-                    <h3 className="mt-3" style={{ color: "#007bff" }}>Welcome!</h3>
+                    <h3 className="mt-2" style={{ color: "#00bcd4", fontWeight: "600" }}>Welcome Back!</h3>
 
                     <ProfilePictureUploader
                         userId={localStorage.getItem("user_id")}
@@ -88,7 +109,7 @@ export default function Home() {
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h2 style={{ color: '#007bff' }}>Your Dental Appointments</h2>
+                    <h2 style={{ color: '#00bcd4', fontWeight: '600' }}>Your Appointments</h2>
                     <Button variant="outline-primary" onClick={handleLogout}>
                         Logout
                     </Button>
@@ -104,7 +125,7 @@ export default function Home() {
 
 function CardGroup({ bookings, handleDelete }) {
     const [localBookings, setLocalBookings] = useState(bookings);
-    const navigate = useNavigate(); // <-- Add this line!
+    const navigate = useNavigate();
 
     const handleCheckboxChange = (id) => {
         const updatedBookings = localBookings.map((booking) => {
@@ -120,60 +141,69 @@ function CardGroup({ bookings, handleDelete }) {
         setLocalBookings(bookings);
     }, [bookings]);
 
-    return localBookings.map((booking) => {
-        const completed = booking.completed;
-        const bg = completed ? "success" : "warning";
-        const formattedDate = booking.booking_date instanceof Date
-            ? booking.booking_date.toLocaleDateString()
-            : booking.booking_date;
-        const formattedTime = booking.booking_time instanceof Date
-            ? booking.booking_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            : booking.booking_time;
+    return localBookings.length > 0 ? (
+        localBookings.map((booking) => {
+            const completed = booking.completed;
+            const bg = completed ? "success" : "warning";
+            const formattedDate = typeof booking.booking_date === "string"
+                ? booking.booking_date
+                : booking.booking_date.toLocaleDateString();
+            const formattedTime = typeof booking.booking_time === "string"
+                ? booking.booking_time
+                : booking.booking_time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        return (
-            <Col md={6} lg={4} key={booking.booking_id}>
-                <Card className="shadow-sm rounded-4 border-0">
-                    <Card.Body>
-                        <Card.Title className="fw-bold text-primary">{booking.title}</Card.Title>
-                        <Card.Text className="text-muted">{booking.description}</Card.Text>
-                        <Card.Text><strong>Date:</strong> {formattedDate}</Card.Text>
-                        <Card.Text><strong>Time:</strong> {formattedTime}</Card.Text>
-                        <Card.Text><strong>Location:</strong> {booking.location}</Card.Text>
+            return (
+                <Col md={6} lg={4} key={booking.booking_id}>
+                    <Card className="shadow-sm rounded-4 border-0 h-100">
+                        <Card.Body className="d-flex flex-column justify-content-between">
+                            <div>
+                                <Card.Title className="fw-bold text-primary">{booking.title}</Card.Title>
+                                <Card.Text className="text-muted small">{booking.description || "No additional notes"}</Card.Text>
+                                <Card.Text><strong>Date:</strong> {formattedDate}</Card.Text>
+                                <Card.Text><strong>Time:</strong> {formattedTime}</Card.Text>
+                                <Card.Text><strong>Location:</strong> {booking.location}</Card.Text>
 
-                        <div className="d-flex align-items-center mb-3">
-                            <Badge bg={bg} className="me-2">
-                                {completed ? "Completed" : "Pending"}
-                            </Badge>
+                                <div className="d-flex align-items-center mb-3">
+                                    <Badge bg={bg} className="me-2">
+                                        {completed ? "Completed" : "Pending"}
+                                    </Badge>
 
-                            {!completed && (
-                                <Form.Check
-                                    type="checkbox"
-                                    label="Mark as completed"
-                                    onChange={() => handleCheckboxChange(booking.booking_id)}
-                                />
-                            )}
-                        </div>
-                        <Button
-                            variant="outline-success"
-                            size="sm"
-                            className="me-2"
-                            onClick={() => navigate(`/edit/${booking.booking_id}`)} // <-- now navigate works
-                        >
-                            Edit
-                        </Button>
+                                    {!completed && (
+                                        <Form.Check
+                                            type="checkbox"
+                                            label="Mark as completed"
+                                            onChange={() => handleCheckboxChange(booking.booking_id)}
+                                            className="small"
+                                        />
+                                    )}
+                                </div>
+                            </div>
 
-                        <div>
-                            <Button
-                                variant="outline-danger"
-                                size="sm"
-                                onClick={() => handleDelete(booking.booking_id)}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </Card.Body>
-                </Card>
-            </Col>
-        );
-    });
+                            <div className="d-flex justify-content-between">
+                                <Button
+                                    variant="outline-success"
+                                    size="sm"
+                                    className="rounded-3"
+                                    onClick={() => navigate(`/edit/${booking.booking_id}`)}
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    className="rounded-3"
+                                    onClick={() => handleDelete(booking.booking_id)}
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            );
+        })
+    ) : (
+        <div className="text-center text-muted">No appointments yet.</div>
+    );
 }
+

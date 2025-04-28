@@ -96,7 +96,7 @@ export default function AddBooking() {
         <Card.Body>
           <div className="text-center mb-4">
             <img
-              src="/images/clinic-logo.png" // (replace if your logo is somewhere else)
+              src="/images/clinic-logo.jpg" // (replace if your logo is somewhere else)
               alt="BrightSmile Dental Logo"
               style={{ width: '60px', marginBottom: '1rem' }}
             />

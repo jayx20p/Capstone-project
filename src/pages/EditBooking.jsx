@@ -114,7 +114,7 @@ export default function EditBooking() {
                 <Card.Body>
                     <div className="text-center mb-4">
                         <img
-                            src="/images/clinic-logo.png" // replace with your correct logo path
+                            src="/images/clinic-logo.jpg" // replace with your correct logo path
                             alt="BrightSmile Dental Logo"
                             style={{ width: '60px', marginBottom: '1rem' }}
                         />

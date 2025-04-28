@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { auth, googleProvider, signInWithPopup } from '../firebase';
+import { auth, googleProvider, signInWithPopup } from '../firebase.js';
 import axios from 'axios';
 
 function Login() {

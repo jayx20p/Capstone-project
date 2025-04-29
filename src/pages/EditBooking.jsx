@@ -167,12 +167,12 @@ export default function EditBooking() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="location">
-                            <Form.Label>Update Clinic Address</Form.Label>
+                            <Form.Label>Select New Address</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={selectedAddress}
-                                onChange={(e) => setValue(e.target.value)}
-                                disabled={!ready}
+                                value={value}  // Use 'value' from usePlacesAutocomplete instead of selectedAddress
+                                onChange={(e) => setValue(e.target.value)}  // Update the value state when user types
+                                disabled={!ready}  // Enable only when ready
                                 placeholder="Type and select address"
                                 required
                             />
@@ -191,6 +191,7 @@ export default function EditBooking() {
                                 </div>
                             )}
                         </Form.Group>
+
 
                         {selectedAddress && (
                             <p className="text-muted small mb-3">Selected: {selectedAddress}</p>

@@ -150,9 +150,9 @@ export default function AddBooking() {
               <Form.Label>Clinic Location / Address</Form.Label>
               <Form.Control
                 type="text"
-                value={selectedAddress}
-                onChange={(e) => setValue(e.target.value)}
-                disabled={!ready}
+                value={value}  // Use 'value' from usePlacesAutocomplete instead of selectedAddress
+                onChange={(e) => setValue(e.target.value)}  // Update the value state when user types
+                disabled={!ready}  // Enable only when ready
                 placeholder="Type and select address"
                 required
               />

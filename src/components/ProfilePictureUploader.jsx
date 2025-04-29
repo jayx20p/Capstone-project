@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../firebase';
+import { storage } from '../firebase.js';
 import axios from 'axios'; // <-- Make sure to import axios!
 
 function ProfilePictureUploader({ userId, onUploadComplete }) {

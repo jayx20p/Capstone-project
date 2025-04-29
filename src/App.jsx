@@ -9,6 +9,7 @@ import EditBooking from "./pages/EditBooking";
 import useLocalStorage from "use-local-storage";
 import { BookingContext } from "./contexts/BookingContext";
 import { LoadScript } from "@react-google-maps/api";
+import { useState } from "react";
 
 // Layout WITH Navbar (used for home, add booking, etc.)
 function Layout() {
@@ -29,25 +30,35 @@ function Layout() {
 
 export default function App() {
   const [bookings, setBookings] = useLocalStorage("bookings", []);
+  const [mapsLoaded, setMapsLoaded] = useState(false);
+
+  console.log("Google Maps API Key:", import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 
   return (
     <LoadScript
       googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
       libraries={["places"]}
+      onLoad={() => setMapsLoaded(true)}
     >
-      <BookingContext.Provider value={{ bookings, setBookings }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route element={<Layout />}>
-              <Route path="/home" element={<Home />} />
-              <Route path="/add" element={<AddBooking />} />
-              <Route path="/edit/:bookingId" element={<EditBooking />} />
-              <Route path="*" element={<ErrorPage />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </BookingContext.Provider>
+      {mapsLoaded ? (
+        <BookingContext.Provider value={{ bookings, setBookings }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route element={<Layout />}>
+                <Route path="/home" element={<Home />} />
+                <Route path="/add" element={<AddBooking />} />
+                <Route path="/edit/:bookingId" element={<EditBooking />} />
+                <Route path="*" element={<ErrorPage />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </BookingContext.Provider>
+      ) : (
+        <div style={{ textAlign: "center", marginTop: "100px" }}>
+          <h5>Loading Google Maps...</h5>
+        </div>
+      )}
     </LoadScript>
   );
 }

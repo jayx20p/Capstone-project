@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../firebase';
 import axios from 'axios'; // <-- Make sure to import axios!
@@ -7,6 +7,17 @@ function ProfilePictureUploader({ userId, onUploadComplete }) {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
+
+    // State for tracking the profile picture URL
+    const [profilePictureURL, setProfilePictureURL] = useState(null);
+
+    useEffect(() => {
+        // Check localStorage for a previously stored profile picture URL
+        const storedProfilePictureURL = localStorage.getItem('profilePictureURL');
+        if (storedProfilePictureURL) {
+            setProfilePictureURL(storedProfilePictureURL);
+        }
+    }, []);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -25,7 +36,10 @@ function ProfilePictureUploader({ userId, onUploadComplete }) {
             // Get the download URL
             const downloadURL = await getDownloadURL(storageRef);
 
-            // === 🛠 Paste your axios.put here ===
+            // Save the download URL to localStorage
+            localStorage.setItem('profilePictureURL', downloadURL);
+
+            // Call the backend to update the user's profile picture
             await axios.put(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/users/${userId}/profile-picture`, {
                 profile_picture: downloadURL,
             });
@@ -52,3 +66,4 @@ function ProfilePictureUploader({ userId, onUploadComplete }) {
 }
 
 export default ProfilePictureUploader;
+

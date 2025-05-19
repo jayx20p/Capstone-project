@@ -29,8 +29,20 @@ export default function Home() {
                 setLoading(false);
             }
         };
+        const fetchProfilePicture = async () => {
+            const userId = localStorage.getItem("user_id");
+            if (userId) {
+                try {
+                    const response = await axios.get(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/users/${userId}/profile-picture`);
+                    setProfilePicUrl(response.data.profile_picture); // Set the profile picture URL
+                } catch (err) {
+                    console.error("Error fetching profile picture:", err);
+                }
+            }
+        };
 
         fetchBookings();
+        fetchProfilePicture();
     }, [setBookings]);
 
     const handleDelete = async (id) => {

@@ -3,7 +3,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
 import AddBooking from "./pages/AddBooking";
 import EditBooking from "./pages/EditBooking";
 import useLocalStorage from "use-local-storage";
@@ -17,6 +17,13 @@ function Layout() {
     <>
       <Navbar bg="light" variant="light">
         <Container>
+          <div className="mb-1">
+            <img
+              src="/images/clinic-logo.jpg"
+              alt="Dental Logo"
+              style={{ width: '80px', marginRight: '5.5rem' }}
+            />
+          </div>
           <Navbar.Brand href="/home">Appointments</Navbar.Brand>
           <Nav>
             <Nav.Link href="/add">Add Appointment</Nav.Link>
@@ -44,7 +51,7 @@ export default function App() {
         <BookingContext.Provider value={{ bookings, setBookings }}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<LandingPage />} />
               <Route element={<Layout />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="/add" element={<AddBooking />} />

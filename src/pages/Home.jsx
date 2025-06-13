@@ -120,13 +120,17 @@ export default function Home() {
                     />
                 </div>
 
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h2 style={{ color: '#00bcd4', fontWeight: '600' }}>Your Appointments</h2>
+                {/* Position the Logout button in the top-right corner */}
+                <div style={{
+                    position: 'absolute',
+                    top: '105px',
+                    left: '115px',
+                    zIndex: 10
+                }}>
                     <Button variant="outline-primary" onClick={handleLogout}>
                         Logout
                     </Button>
                 </div>
-
                 <Row className="gx-4 gy-4">
                     <CardGroup bookings={bookings} handleDelete={handleDelete} />
                 </Row>
@@ -218,4 +222,3 @@ function CardGroup({ bookings, handleDelete }) {
         <div className="text-center text-muted">No appointments yet.</div>
     );
 }
-

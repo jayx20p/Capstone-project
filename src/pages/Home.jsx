@@ -210,7 +210,7 @@ function CardGroup({ bookings, handleDelete }) {
                                     className="rounded-3"
                                     onClick={() => handleDelete(booking.booking_id)}
                                 >
-                                    Cancel
+                                    Delete
                                 </Button>
                             </div>
                         </Card.Body>

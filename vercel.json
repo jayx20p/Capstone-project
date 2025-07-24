@@ -1,9 +1,9 @@
 {
-    "outputDirectory": "dist",
-    "rewrites": [
+    "routes": [
         {
-            "source": "/(.*)",
-            "destination": "/"
+            "src": "/[^.]+",
+            "dest": "/",
+            "status": 200
         }
     ]
 }

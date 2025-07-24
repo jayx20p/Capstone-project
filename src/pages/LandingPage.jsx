@@ -43,7 +43,7 @@ function LandingPage() {
             <Container>
                 <Card style={{
                     padding: '3rem',
-                    borderRadius: '1.5rem',
+                    borderRadius: '2rem',
                     boxShadow: '0 8px 30px rgba(0, 123, 255, 0.2)',
                     border: 'none',
                     textAlign: 'center'
@@ -54,7 +54,7 @@ function LandingPage() {
                             alt="Dental Logo"
                             style={{ width: '100px', marginBottom: '1rem' }}
                         />
-                        <h2 style={{ color: '#00bcd4', fontWeight: '600' }}>Welcome to BrightSmile Dental</h2>
+                        <h2 style={{ color: '#00bcd4', fontWeight: '600' }}>Welcome to BrightSmile Dental!</h2>
                         <p className="text-muted" style={{ fontSize: '1.1rem' }}>
                             Your Smile, Our Passion. Providing expert care for your dental needs.
                         </p>

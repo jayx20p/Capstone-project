@@ -146,6 +146,15 @@ function CardGroup({ bookings, handleDelete }) {
     const handleCheckboxChange = (id) => {
         const updatedBookings = localBookings.map((booking) => {
             if (booking.booking_id === id) {
+                const newStatus = !booking.completed;
+                // Send update to backend
+                axios.put(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings/${id}/completed`, { completed: newStatus })
+                    .then(() => {
+                        console.log("Status updated");
+                    })
+                    .catch(err => {
+                        console.error("Failed to update status:", err);
+                    });
                 return { ...booking, completed: !booking.completed };
             }
             return booking;

@@ -32,22 +32,9 @@ function LandingPage() {
     };
 
     return (
-        <div style={{
-            background: 'linear-gradient(to bottom right, #d0f0f6, #ffffff)',
-            minHeight: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '2rem'
-        }}>
+        <div className="landing-page">
             <Container>
-                <Card style={{
-                    padding: '3rem',
-                    borderRadius: '2rem',
-                    boxShadow: '0 8px 30px rgba(0, 123, 255, 0.2)',
-                    border: 'none',
-                    textAlign: 'center'
-                }}>
+                <Card style={{ padding: '3rem', borderRadius: '2rem', boxShadow: '0 8px 30px rgba(0, 123, 255, 0.2)', border: 'none', textAlign: 'center' }}>
                     <div className="mb-5">
                         <img
                             src="/images/clinic-logo.jpg"
@@ -106,5 +93,6 @@ function LandingPage() {
 }
 
 export default LandingPage;
+
 
 

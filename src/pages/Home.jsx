@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Container, Row, Form, Spinner } from "react-bootstrap";
+import { Badge, Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { BookingContext } from "../contexts/BookingContext";
 import { useNavigate } from "react-router-dom";
@@ -91,13 +91,12 @@ export default function Home() {
                         <img
                             src={profilePicUrl}
                             alt="Profile"
+                            className="profile-picture"
                             style={{
                                 width: "120px",
                                 height: "120px",
-                                borderRadius: "50%",
                                 objectFit: "cover",
-                                border: "3px solid #00bcd4",
-                                marginBottom: "1rem"
+                                marginBottom: "1rem",
                             }}
                         />
                     ) : (
@@ -108,11 +107,13 @@ export default function Home() {
                                 borderRadius: "50%",
                                 backgroundColor: "#e0e0e0",
                                 display: "inline-block",
-                                marginBottom: "1rem"
+                                marginBottom: "1rem",
                             }}
                         />
                     )}
-                    <h3 className="mt-2" style={{ color: "#00bcd4", fontWeight: "600" }}>Welcome Back!</h3>
+                    <h3 className="mt-2" style={{ color: "#00bcd4", fontWeight: "600" }}>
+                        Welcome Back!
+                    </h3>
 
                     <ProfilePictureUploader
                         userId={localStorage.getItem("user_id")}
@@ -231,3 +232,4 @@ function CardGroup({ bookings, handleDelete }) {
         <div className="text-center text-muted">No appointments yet.</div>
     );
 }
+

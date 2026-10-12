@@ -42,7 +42,7 @@ export default function EditBooking() {
         const fetchBooking = async () => {
             try {
                 const response = await axios.get(
-                    `https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings/${bookingId}`
+                    `http://localhost:5000/bookings/${bookingId}`
                 );
 
                 const booking = response.data;
@@ -70,7 +70,7 @@ export default function EditBooking() {
             };
 
             await axios.put(
-                `https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings/${bookingId}`,
+                `http://localhost:5000/bookings/${bookingId}`,
                 updatedData
             );
 

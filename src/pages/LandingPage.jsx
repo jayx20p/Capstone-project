@@ -17,7 +17,7 @@ function LandingPage() {
             const displayName = user.displayName;
             const google_uid = user.uid;
 
-            const response = await axios.post('https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/auth/google', {
+            const response = await axios.post('http://localhost:5000/auth/google', {
                 email,
                 display_name: displayName,
                 google_uid,

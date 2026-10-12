@@ -36,7 +36,7 @@ function ProfilePictureUploader({ userId, onUploadComplete }) {
             const downloadURL = await getDownloadURL(storageRef);
             localStorage.setItem('profilePictureURL', downloadURL);
 
-            await axios.put(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/users/${userId}/profile-picture`, {
+            await axios.put(`http://localhost:5000/users/${userId}/profile-picture`, {
                 profile_picture: downloadURL,
             });
 

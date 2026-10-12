@@ -64,7 +64,7 @@ export default function AddBooking() {
       };
 
       const response = await axios.post(
-        "https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings",
+        "http://localhost:5000/bookings",
         bookingData
       );
 

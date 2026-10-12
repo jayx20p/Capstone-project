@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Badge, Button, Card, Col, Container, Row, Spinner, Form } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { BookingContext } from "../contexts/BookingContext";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ export default function Home() {
     useEffect(() => {
         const fetchBookings = async () => {
             try {
-                const response = await axios.get('https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings');
+                const response = await axios.get('http://localhost:5000/bookings');
                 setBookings(response.data);
                 setLoading(false);
             } catch (err) {
@@ -33,7 +33,7 @@ export default function Home() {
             const userId = localStorage.getItem("user_id");
             if (userId) {
                 try {
-                    const response = await axios.get(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/users/${userId}/profile-picture`);
+                    const response = await axios.get(`http://localhost:5000/users/${userId}/profile-picture`);
                     setProfilePicUrl(response.data.profile_picture); // Set the profile picture URL
                 } catch (err) {
                     console.error("Error fetching profile picture:", err);
@@ -47,7 +47,7 @@ export default function Home() {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings/${id}`);
+            const response = await axios.delete(`http://localhost:5000/bookings/${id}`);
             if (response.status === 200) {
                 setBookings(bookings.filter((booking) => booking.booking_id !== id));
             }
@@ -149,7 +149,7 @@ function CardGroup({ bookings, handleDelete }) {
             if (booking.booking_id === id) {
                 const newStatus = !booking.completed;
                 // Send update to backend
-                axios.put(`https://e9a31eec-d312-45e7-8960-2a935181c7c2-00-21vv1xhchkzhd.sisko.replit.dev/bookings/${id}/completed`, { completed: newStatus })
+                axios.put(`http://localhost:5000/bookings/${id}/completed`, { completed: newStatus })
                     .then(() => {
                         console.log("Status updated");
                     })
